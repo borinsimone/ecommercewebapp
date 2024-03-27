@@ -15,10 +15,12 @@ function App() {
 
 export default App;
 const Container = styled.div`
-  min-height: 100svh;
+  height: fit-content;
   width: 100vw;
   display: flex;
   flex-direction: column;
   align-items: center;
   background-color: #fff9e9;
+  overflow-y: auto;
+  overflow-x: hidden;
 `;

@@ -2,6 +2,7 @@ import React from "react";
 import styled, { css } from "styled-components";
 import bg from "../../assets/aboutbg.png";
 import Faq from "./Faq";
+import Info from "./Info";
 function About() {
   return (
     <Container>
@@ -58,6 +59,7 @@ function About() {
         </SectionText>
       </Section>
       <Faq />
+      <Info />
     </Container>
   );
 }
@@ -71,9 +73,11 @@ const Container = styled.div`
   gap: 30px;
 `;
 const Bg = styled.img`
-  width: 100vw;
+  width: 100%;
 `;
 const Section = styled.div`
+  width: 90%;
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -83,6 +87,7 @@ const Section = styled.div`
     css`
       background-color: #191919;
       color: #fff;
+      /* padding: 20px 0; */
     `};
 `;
 const Title = styled.div`
@@ -90,6 +95,8 @@ const Title = styled.div`
   font-weight: 500;
   font-family: var(--primary-text);
   font-size: 1.7rem;
+  width: 90%;
+  text-align: center;
 `;
 const SectionText = styled.div`
   font-family: var(--secondary-text);

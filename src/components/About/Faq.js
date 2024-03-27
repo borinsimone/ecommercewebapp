@@ -38,9 +38,10 @@ function Faq() {
           open={faqOpen[i]}
           onClick={() => {
             let newArray = [...faqOpen];
-            if (newArray[i] === true) {
+            if (faqList[i] === true) {
               newArray[i] = false;
             } else {
+              newArray = faqList.map((product) => false);
               newArray[i] = true;
             }
             setFaqOpen(newArray);
@@ -87,13 +88,11 @@ const Answer = styled.div`
   color: rgba(0, 0, 0, 0.7);
   font-family: var(--secondary-text);
   height: 0;
-  overflow: hidden;
   opacity: 0;
   ${(props) =>
     props.open &&
     css`
       height: 70px;
-      overflow: visible;
       opacity: 1;
     `};
   transition: 300ms;

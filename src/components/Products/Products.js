@@ -53,7 +53,6 @@ const Container = styled.div`
   flex-direction: column;
   align-items: flex-start;
   padding: 10px;
-  overflow-x: hidden;
   gap: 20px;
 `;
 const Title = styled.div`
@@ -64,12 +63,12 @@ const Title = styled.div`
 `;
 const TopCategories = styled.div`
   width: 100%;
-  overflow-x: auto;
   gap: 20px;
   /* background-color: red; */
   white-space: nowrap;
   position: relative;
   padding-bottom: 20px;
+  overflow-x: auto;
   &::-webkit-scrollbar {
     background-color: #d9d9d9;
     height: 5px;
@@ -96,8 +95,8 @@ const TopCategoriesCard = styled.div`
   align-items: center;
   border-radius: 10px;
   position: relative;
-  overflow: hidden;
   padding: 10px;
+  overflow: hidden;
 `;
 const CardTitle = styled.div`
   text-transform: capitalize;

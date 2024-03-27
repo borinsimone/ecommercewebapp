@@ -69,7 +69,10 @@ function Home() {
         )}
       </AnimatePresence>
       <Body>
-        <Title>products for the soul</Title>
+        <Title>
+          products <br />
+          for the <br /> soul
+        </Title>
         <SubTitle>
           Breathing new life trough cultural crafts
         </SubTitle>
@@ -92,13 +95,12 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 10px;
-  overflow: hidden;
   position: relative;
 `;
 const IconContainerOpen = styled.div``;
 const IconContainerClose = styled.div``;
 const MenuIcon = styled(IoMenu)`
-  font-size: 30px;
+  font-size: 2rem;
 `;
 const CloseIcon = styled(IoClose)`
   font-size: 30px;
@@ -110,6 +112,7 @@ const Navbar = styled.nav`
   align-items: center;
   font-family: var(--primary-text);
   z-index: 12;
+  overflow: hidden;
 `;
 const Logo = styled.div`
   font-size: 1.3rem;
@@ -135,11 +138,12 @@ const Title = styled.div`
   font-weight: 500;
   font-family: var(--primary-text);
   font-size: 4rem;
+  width: 100%;
 `;
 const SubTitle = styled.div`
   font-family: var(--secondary-text);
   font-size: 2rem;
-  opacity: 0.6;
+  opacity: 0.8;
 `;
 const CTA = styled.button`
   all: unset;
@@ -182,11 +186,12 @@ const Link = styled.li`
   letter-spacing: 2px;
 `;
 const BtnContainer = styled.div`
-  position: absolute;
+  position: fixed;
   bottom: 0;
   display: flex;
   gap: 20px;
   padding: 10px;
+  z-index: 100;
 `;
 const CartIcon = styled(FaShoppingCart)`
   font-size: 30px;
