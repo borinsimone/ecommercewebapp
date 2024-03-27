@@ -1,12 +1,14 @@
 import styled from "styled-components";
 import Home from "./components/Home/Home";
 import Products from "./components/Products/Products";
+import About from "./components/About/About";
 
 function App() {
   return (
     <Container>
       <Home />
       <Products />
+      <About />
     </Container>
   );
 }

@@ -3,6 +3,11 @@ import styled from "styled-components";
 import { IoClose, IoMenu } from "react-icons/io5";
 import { AnimatePresence, motion } from "framer-motion";
 import bg from "../../assets/image mobile.png";
+import {
+  FaHeart,
+  FaRegHeart,
+  FaShoppingCart,
+} from "react-icons/fa";
 function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   let menuLinks = ["home", "shop", "about", "contact"];
@@ -71,6 +76,10 @@ function Home() {
         <CTA>shop now</CTA>
       </Body>
       <BgImg src={bg} />
+      <BtnContainer>
+        <CartIcon />
+        <WhisIcon />
+      </BtnContainer>
     </Container>
   );
 }
@@ -171,4 +180,32 @@ const Link = styled.li`
   font-size: 2rem;
   font-weight: 600;
   letter-spacing: 2px;
+`;
+const BtnContainer = styled.div`
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  gap: 20px;
+  padding: 10px;
+`;
+const CartIcon = styled(FaShoppingCart)`
+  font-size: 30px;
+  border: 2px solid white;
+  height: 50px;
+  width: 50px;
+  padding: 10px;
+  border-radius: 50%;
+  color: white;
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.7);
+`;
+const WhisIcon = styled(FaHeart)`
+  font-size: 30px;
+  border: 2px solid white;
+  height: 50px;
+  width: 50px;
+  padding: 10px;
+  border-radius: 50%;
+  color: white;
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.7);
+  color: red;
 `;

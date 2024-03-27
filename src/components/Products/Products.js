@@ -4,6 +4,7 @@ import furnitureImg from "../../assets/furniture.png";
 import ornamentsImg from "../../assets/bodyornaments.png";
 import incenseImg from "../../assets/incense.png";
 import candleImg from "../../assets/candle.png";
+import Deals from "./Deals";
 function Products() {
   let TopCategoriesList = [
     {
@@ -38,6 +39,8 @@ function Products() {
           </TopCategoriesCard>
         ))}
       </TopCategories>
+      <Title>best deals for you</Title>
+      <Deals />
     </Container>
   );
 }
@@ -54,7 +57,7 @@ const Container = styled.div`
   gap: 20px;
 `;
 const Title = styled.div`
-  text-transform: uppercase;
+  text-transform: capitalize;
   font-weight: 500;
   font-family: var(--primary-text);
   font-size: 1.7rem;

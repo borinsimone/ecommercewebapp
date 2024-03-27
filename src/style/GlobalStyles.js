@@ -4,7 +4,7 @@ export const GlobalStyles = createGlobalStyle`
 
 :root{
     --primary-text : "Fira Sans", sans-serif;
-    --secondary-text : font-family: "PT Serif", serif;
+    --secondary-text :  "PT Serif", serif;
 }
 *{
     
