@@ -1,7 +1,28 @@
-import { transform } from "framer-motion";
-import React, { useState } from "react";
+import { transform, useInView } from "framer-motion";
+import React, { useRef, useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
 import styled, { css } from "styled-components";
+function FaqComponent({ children, onClick }) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, {
+    once: true,
+  });
+
+  return (
+    <FaqContainer
+      ref={ref}
+      onClick={onClick} // Aggiungi la proprietà onClick
+      style={{
+        transform: isInView ? "none" : "translateY(200px)",
+        opacity: isInView ? 1 : 0,
+        transition:
+          "all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 0.2s",
+      }}
+    >
+      {children}
+    </FaqContainer>
+  );
+}
 
 function Faq() {
   let faqList = [
@@ -33,12 +54,19 @@ function Faq() {
     <Container>
       <Title>faq</Title>
       {faqList.map((faq, i) => (
-        <FaqContainer
+        <FaqComponent
           key={i}
           open={faqOpen[i]}
           onClick={() => {
+            console.log(
+              "===================================="
+            );
+            console.log("test");
+            console.log(
+              "===================================="
+            );
             let newArray = [...faqOpen];
-            if (faqList[i] === true) {
+            if (faqOpen[i] === true) {
               newArray[i] = false;
             } else {
               newArray = faqList.map((product) => false);
@@ -52,7 +80,7 @@ function Faq() {
             <ChevronIcon open={faqOpen[i]} />
           </Question>
           <Answer open={faqOpen[i]}>{faq.answer}</Answer>
-        </FaqContainer>
+        </FaqComponent>
       ))}
     </Container>
   );
@@ -77,8 +105,10 @@ const FaqContainer = styled.div`
   flex-direction: column;
   padding: 20px;
   width: 100%;
+  max-width: 1200px;
   position: relative;
   gap: 10px;
+  cursor: pointer;
 `;
 const Question = styled.div`
   font-family: var(--primary-text);

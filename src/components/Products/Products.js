@@ -1,18 +1,25 @@
-import React from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
 import furnitureImg from "../../assets/furniture.png";
 import ornamentsImg from "../../assets/bodyornaments.png";
 import incenseImg from "../../assets/incense.png";
 import candleImg from "../../assets/candle.png";
 import Deals from "./Deals";
-function Products() {
+import { useInView } from "framer-motion";
+function Products({
+  setCartContent,
+  cartContent,
+  whisContent,
+  setWhisContent,
+  shopRef,
+}) {
   let TopCategoriesList = [
     {
       name: "furniture",
       img: furnitureImg,
     },
     {
-      name: "body ornaments",
+      name: "ornaments",
       img: ornamentsImg,
     },
     {
@@ -28,9 +35,23 @@ function Products() {
       img: "",
     },
   ];
+  const ShopTitle = useRef();
+  const isShopInView = useInView(ShopTitle);
+  const DealTitle = useRef();
+  const isDealInView = useInView(DealTitle);
+
   return (
-    <Container>
-      <Title>Shop our top categories</Title>
+    <Container ref={shopRef}>
+      <Title
+        ref={ShopTitle}
+        style={{
+          opacity: isShopInView ? 1 : 0,
+          top: isShopInView ? 0 : "100px",
+          transition: "400ms",
+        }}
+      >
+        Shop our top categories
+      </Title>
       <TopCategories>
         {TopCategoriesList.map((card, i) => (
           <TopCategoriesCard key={i}>
@@ -39,8 +60,22 @@ function Products() {
           </TopCategoriesCard>
         ))}
       </TopCategories>
-      <Title>best deals for you</Title>
-      <Deals />
+      <Title
+        ref={DealTitle}
+        style={{
+          opacity: isDealInView ? 1 : 0,
+          top: isDealInView ? 0 : "100px",
+          transition: "400ms",
+        }}
+      >
+        best deals for you
+      </Title>
+      <Deals
+        cartContent={cartContent}
+        setCartContent={setCartContent}
+        whisContent={whisContent}
+        setWhisContent={setWhisContent}
+      />
     </Container>
   );
 }
@@ -60,6 +95,7 @@ const Title = styled.div`
   font-weight: 500;
   font-family: var(--primary-text);
   font-size: 1.7rem;
+  position: relative;
 `;
 const TopCategories = styled.div`
   width: 100%;
@@ -84,6 +120,11 @@ const TopCategories = styled.div`
   &::-webkit-scrollbar-thumb:hover {
     background-color: red;
   }
+  @media (min-width: 1024px) {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+  }
 `;
 const TopCategoriesCard = styled.div`
   height: 145px;
@@ -97,14 +138,20 @@ const TopCategoriesCard = styled.div`
   position: relative;
   padding: 10px;
   overflow: hidden;
+  @media (min-width: 1024px) {
+  }
 `;
 const CardTitle = styled.div`
   text-transform: capitalize;
   font-family: var(--secondary-text);
-  font-weight: 400;
+  font-weight: 700;
   z-index: 10;
   color: white;
   letter-spacing: 1px;
+  width: 100%;
+  height: fit-content;
+  text-align: center;
+  overflow-wrap: break-word;
 `;
 const CardImg = styled.img`
   position: absolute;
@@ -113,4 +160,9 @@ const CardImg = styled.img`
   bottom: -20%;
   width: 120%;
   height: auto;
+  transition: 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  &:hover {
+    width: 160%;
+    bottom: -50%;
+  }
 `;

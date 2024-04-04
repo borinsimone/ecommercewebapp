@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import bg from "../../assets/infobg.png";
-function Info() {
+function Info({ contactRef }) {
   return (
-    <Container>
+    <Container ref={contactRef}>
       <NewsletterContainer>
         <Bg src={bg} />
         <Title>exclusive news & content</Title>
@@ -38,7 +38,7 @@ function Info() {
           <InfoLink>terms</InfoLink>
         </InfoColumn>
       </InfoContainer>
-      <Title>LANGUAGE & CURRENCY</Title>
+      {/* <Title>LANGUAGE & CURRENCY</Title> */}
     </Container>
   );
 }
@@ -52,6 +52,7 @@ const Container = styled.div`
   padding-top: 50px;
   width: 100%;
   overflow: hidden;
+  padding-bottom: 10svh;
 `;
 
 const Bg = styled.img`
@@ -87,6 +88,7 @@ const Subtitle = styled.div`
 `;
 const Subscribe = styled.div`
   width: 80%;
+  max-width: 400px;
   border: 2px solid white;
   z-index: 1;
   border-radius: 50px;
@@ -116,6 +118,7 @@ const Submit = styled.button`
 `;
 const InfoContainer = styled.div`
   width: 100%;
+  max-width: 1000px;
   display: flex;
   justify-content: space-between;
   padding: 20px;

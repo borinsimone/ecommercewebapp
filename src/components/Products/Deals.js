@@ -1,12 +1,20 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import {
+  FaCheck,
   FaHeart,
   FaRegHeart,
   FaStar,
 } from "react-icons/fa";
 import { IoCart } from "react-icons/io5";
-function Deals() {
+import { AnimatePresence, motion } from "framer-motion";
+function Deals({
+  cartContent,
+
+  setCartContent,
+  whisContent,
+  setWhisContent,
+}) {
   let productsList = [
     {
       img: "",
@@ -14,6 +22,7 @@ function Deals() {
       price: "$99.99",
       desciption: "",
       rating: [true, true, true, true, false],
+      id: 0,
     },
     {
       img: "",
@@ -21,9 +30,29 @@ function Deals() {
       price: "$99.99",
       desciption: "",
       rating: [true, true, true, true, false],
+      id: 1,
+    },
+    {
+      img: "",
+      name: "name3",
+      price: "$99.99",
+      desciption: "",
+      rating: [true, true, true, false, false],
+      id: 2,
+    },
+    {
+      img: "",
+      name: "name3",
+      price: "$99.99",
+      desciption: "",
+      rating: [true, true, true, false, false],
+      id: 3,
     },
   ];
   const [cardOpen, setCardOpen] = useState(
+    productsList.map((product) => false)
+  );
+  const [alertOpen, setAlertOpen] = useState(
     productsList.map((product) => false)
   );
   return (
@@ -51,36 +80,167 @@ function Deals() {
                 <Name>{product.name}</Name>{" "}
                 <Price>{product.price}</Price>
               </MainDetails>
-              {/* <Description>Product description</Description> */}
               <Rating>
                 {product.rating.map((rate, i) => {
                   return <StarIcon key={i} active={rate} />;
                 })}
-                {/* <StarIcon />
-                <StarIcon />
-                <StarIcon />
-                <StarIcon /> */}
+
                 <span>(128)</span>
               </Rating>
-
-              {/* <BtnContainer>
-            <WhislistBtn>
-              <HeartIcon />
-            </WhislistBtn>
-            <AddToCart>add to cart</AddToCart>
-          </BtnContainer> */}
             </Details>
           </ProductCard>
           <WhislistPanel active={cardOpen[i]}>
             <IconContainer>
-              <HeartIcon />
+              <AnimatePresence mode="wait">
+                {whisContent.some(
+                  (item) => item.id === product.id
+                ) ? (
+                  <motion.div
+                    key="check"
+                    as={motion.div}
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    exit={{ scale: 0 }}
+                    onClick={() => {
+                      let newArray = productsList.map(
+                        (product) => false
+                      );
+                      newArray[i] = true;
+                      setAlertOpen(newArray);
+                    }}
+                  >
+                    <CheckIcon />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="cart"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    exit={{ scale: 0 }}
+                  >
+                    <HeartIcon
+                      onClick={() => {
+                        // Ottieni la data corrente
+                        const currentDate = new Date();
+
+                        // Verifica se il prodotto è già presente nella wishlist
+                        if (
+                          whisContent.some(
+                            (item) => item.id === product.id
+                          )
+                        ) {
+                          return;
+                        } else {
+                          // Aggiungi la data corrente all'oggetto del prodotto
+                          const productWithDate = {
+                            ...product,
+                            addedDate: currentDate,
+                          };
+
+                          // Aggiungi il prodotto alla lista
+                          setWhisContent((prevCart) => [
+                            ...prevCart,
+                            productWithDate,
+                          ]);
+                        }
+                      }}
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </IconContainer>
           </WhislistPanel>
           <CartPanel active={cardOpen[i]}>
             <IconContainer cart={true}>
-              <CartIcon />
+              <AnimatePresence mode="wait">
+                {cartContent.some(
+                  (item) => item.id === product.id
+                ) ? (
+                  <motion.div
+                    key="check"
+                    as={motion.div}
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    exit={{ scale: 0 }}
+                    onClick={() => {
+                      let newArray = productsList.map(
+                        (product) => false
+                      );
+                      newArray[i] = true;
+                      setAlertOpen(newArray);
+                    }}
+                  >
+                    <CheckIcon />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="cart"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    exit={{ scale: 0 }}
+                  >
+                    <CartIcon
+                      onClick={() => {
+                        // Verifica se il prodotto è già presente nel carrello
+                        if (
+                          cartContent.some(
+                            (item) => item.id === product.id
+                          )
+                        ) {
+                          return;
+                        } else {
+                          setCartContent((prevCart) => [
+                            ...prevCart,
+                            product,
+                          ]);
+                        }
+                      }}
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </IconContainer>
           </CartPanel>
+          <AnimatePresence>
+            {alertOpen[i] && (
+              <RemoveItemAlert
+                as={motion.div}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <AlertText>
+                  item already in cart, do you want to
+                  remove it?
+                </AlertText>
+                <BtnContainer>
+                  <AlertBtn
+                    onClick={() => {
+                      let newArray = [...cartContent];
+                      newArray = newArray.filter(
+                        (item) => item.id !== product.id
+                      );
+                      setCartContent(newArray);
+                      setAlertOpen(
+                        productsList.map((product) => false)
+                      );
+                    }}
+                  >
+                    yes
+                  </AlertBtn>
+                  <AlertBtn
+                    onClick={() => {
+                      setAlertOpen(
+                        productsList.map((product) => false)
+                      );
+                    }}
+                  >
+                    no
+                  </AlertBtn>
+                </BtnContainer>
+              </RemoveItemAlert>
+            )}
+          </AnimatePresence>
         </ProductContainer>
       ))}
     </Container>
@@ -96,6 +256,12 @@ const Container = styled.div`
   flex-direction: column;
   gap: 20px;
   /* background-color: #fff; */
+  @media (min-width: 1025px) {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+  }
 `;
 const ProductContainer = styled.div`
   width: 100%;
@@ -108,10 +274,13 @@ const ProductContainer = styled.div`
       ? "4px 8px 8px rgba(0, 0, 0, 0.3)"
       : "none"};
   transition: box-shadow 600ms;
-  @media (min-width: 760px) {
+  @media (min-width: 1025px) {
+    max-width: 500px;
   }
 `;
 const ProductCard = styled.div`
+  cursor: pointer;
+
   z-index: 10;
   width: ${(props) => (props.active ? "60%" : "100%")};
   height: 100%;
@@ -155,7 +324,7 @@ const MainDetails = styled.div`
   height: 100%;
 `;
 const Name = styled.div`
-  font-size: 1.3rem;
+  font-size: 1rem;
   font-weight: 600;
   text-transform: capitalize;
 `;
@@ -207,22 +376,25 @@ const IconContainer = styled.div`
   justify-content: center;
 `;
 const HeartIcon = styled(FaRegHeart)`
-  font-size: 3rem;
-  border-radius: 50%;
-  background-color: #fff;
-  padding: 10px;
+  font-size: 2rem;
   color: red;
+  cursor: pointer;
 `;
 const CartIcon = styled(IoCart)`
-  font-size: 3rem;
+  font-size: 2rem;
+  cursor: pointer;
+`;
+const CheckIcon = styled(FaCheck)`
+  font-size: 2.4rem;
   border-radius: 50%;
-  background-color: #fff;
+  background-color: green;
   padding: 10px;
+  color: white;
 `;
 const BtnContainer = styled.div`
   display: flex;
   align-items: center;
-  margin-left: auto;
+  /* margin-left: auto; */
   gap: 20px;
 `;
 const WhislistPanel = styled.div`
@@ -258,4 +430,36 @@ const CartPanel = styled.div`
   display: flex;
   align-items: center;
   justify-content: end;
+`;
+const RemoveItemAlert = styled.div`
+  z-index: 1000;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: #fff;
+  border-radius: inherit;
+  /* display: none; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+`;
+
+const AlertText = styled.div`
+  font-family: var(--primary-text);
+  text-transform: capitalize;
+  font-size: 1rem;
+  text-align: center;
+  padding: 0 10px;
+`;
+const AlertBtn = styled.button`
+  all: unset;
+  text-transform: uppercase;
+  font-family: var(--secondary-text);
+  font-weight: 600;
+  font-size: 1rem;
+  color: white;
+  background-color: grey;
+  padding: 0.4rem 0.7rem;
+  border-radius: 10px;
 `;
