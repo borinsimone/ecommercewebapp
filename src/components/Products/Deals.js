@@ -189,9 +189,16 @@ function Deals({
                         ) {
                           return;
                         } else {
+                          // Aggiungi la quantità predefinita
+                          const productWithQuantity = {
+                            ...product,
+                            quantity: 1,
+                          };
+
+                          // Aggiungi il prodotto al carrello
                           setCartContent((prevCart) => [
                             ...prevCart,
-                            product,
+                            productWithQuantity,
                           ]);
                         }
                       }}

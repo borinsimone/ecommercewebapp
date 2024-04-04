@@ -94,7 +94,7 @@ function Home({
             </IconContainerOpen>
           )}
         </AnimatePresence>
-        <div>
+        <div className="desktopIcon">
           <WhisIcon
             className="whisIcon"
             onClick={() => {
@@ -248,7 +248,11 @@ const Navbar = styled.nav`
   z-index: 102;
   overflow: hidden;
   position: relative;
-
+  .desktopIcon {
+    @media (max-width: 1025px) {
+      display: none;
+    }
+  }
   .cartIcon {
     @media (max-width: 1025px) {
       display: none;
@@ -257,7 +261,6 @@ const Navbar = styled.nav`
   }
   .whisIcon {
     @media (max-width: 1025px) {
-      display: none;
     }
   }
 `;

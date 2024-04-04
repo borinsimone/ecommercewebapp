@@ -1,6 +1,11 @@
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
-import { IoClose } from "react-icons/io5";
+import {
+  FaChevronLeft,
+  FaChevronRight,
+} from "react-icons/fa";
+import { IoClose, IoShareOutline } from "react-icons/io5";
+import { MdDeleteOutline } from "react-icons/md";
 import styled from "styled-components";
 
 function CartPanel({
@@ -14,16 +19,19 @@ function CartPanel({
     const convertPriceToNumber = (priceString) => {
       return parseFloat(priceString.replace("$", ""));
     };
+
     const totalPrice = cartContent.reduce(
       (acc, product) => {
-        return acc + convertPriceToNumber(product.price);
+        // Moltiplica il prezzo del prodotto per la sua quantità
+        const productPrice =
+          convertPriceToNumber(product.price) *
+          product.quantity;
+        return acc + productPrice;
       },
       0
     );
 
-    return () => {
-      setTotalPrice(totalPrice);
-    };
+    setTotalPrice(totalPrice);
   }, [cartContent]);
 
   return (
@@ -42,7 +50,7 @@ function CartPanel({
       </IconContainer>
       <Title>My Cart</Title>
 
-      {cartContent.map((item, i) => (
+      {cartContent.map((product, i) => (
         <CartItem
           onClick={() => {
             console.log(
@@ -53,18 +61,82 @@ function CartPanel({
               "===================================="
             );
           }}
-          key={item.name}
+          key={product.name}
         >
-          <ItemImg src={item.img} alt="img" />
+          <ItemImg src={product.img} alt="img" />
           <ItemDetails>
-            <ItemName>{item.name}</ItemName>
-            <ItemPrice>{item.price}</ItemPrice>
+            <ItemName>{product.name}</ItemName>
+            <ItemPrice>{product.price}</ItemPrice>
           </ItemDetails>
+          <ItemAction>
+            <div style={{ display: "flex", gap: "10px" }}>
+              <ItemIconContainer
+                onClick={() => {
+                  let newArray = [...cartContent];
+                  newArray = newArray.filter(
+                    (item) => item.id !== product.id
+                  );
+                  setCartContent(newArray);
+                }}
+              >
+                <DeleteIcon />
+              </ItemIconContainer>
+              <ItemIconContainer>
+                <ShareItemIcon />
+              </ItemIconContainer>
+            </div>
+            <div
+              style={{
+                display: "flex",
+                gap: "10px",
+                alignItems: "center",
+              }}
+            >
+              <ReduceQuantity
+                onClick={() => {
+                  const updatedCart = cartContent.map(
+                    (item) => {
+                      if (
+                        item.id === product.id &&
+                        item.quantity > 1
+                      ) {
+                        return {
+                          ...item,
+                          quantity: item.quantity - 1,
+                        };
+                      }
+                      return item;
+                    }
+                  );
+
+                  setCartContent(updatedCart);
+                }}
+              />
+              {product.quantity}
+              <IncreaseQuantity
+                onClick={() => {
+                  const updatedCart = cartContent.map(
+                    (item) => {
+                      if (item.id === product.id) {
+                        return {
+                          ...item,
+                          quantity: item.quantity + 1,
+                        };
+                      }
+                      return item;
+                    }
+                  );
+
+                  setCartContent(updatedCart);
+                }}
+              />
+            </div>
+          </ItemAction>
         </CartItem>
       ))}
       <Total>
         <TotalText>total amount</TotalText>
-        <TotalPrice>{totalPrice}</TotalPrice>
+        <TotalPrice>$ {totalPrice.toFixed(2)}</TotalPrice>
       </Total>
       <CheckoutBtn>checkout</CheckoutBtn>
     </Container>
@@ -168,3 +240,28 @@ const TotalPrice = styled.div`
   font-family: var(--primary-text);
   font-weight: 600;
 `;
+
+const ItemIconContainer = styled.div`
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+  border-radius: 2px solid rgba(0, 0, 0, 0.3);
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+`;
+const ItemAction = styled.div`
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+`;
+const DeleteIcon = styled(MdDeleteOutline)`
+  font-size: 1.4rem;
+`;
+const ShareItemIcon = styled(IoShareOutline)`
+  font-size: 1.3rem;
+`;
+const ReduceQuantity = styled(FaChevronLeft)``;
+const IncreaseQuantity = styled(FaChevronRight)``;
